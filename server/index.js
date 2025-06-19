@@ -2,13 +2,19 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
+import roleRoute from "./routes/role.js";
+import authRoute from "./routes/auth.js";
+import cookieParser from "cookie-parser";
+
 const app = express();
 
 dotenv.config();
 
-app.use("/", (req, res) => {
-  return res.send("Helloeeee!");
-});
+app.use(express.json());
+app.use(cookieParser());
+
+app.use("/api/roles", roleRoute);
+app.use("/api/auth", authRoute);
 
 // DB Connection
 const connectMongoDB = async () => {
