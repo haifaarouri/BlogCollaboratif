@@ -1,0 +1,121 @@
+<div
+  class="container d-flex justify-content-center align-items-center min-vh-100"
+>
+  <div class="card shadow p-4 w-100" style="max-width: 400px">
+    <h2 class="text-center mb-4">Register</h2>
+
+    <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)">
+      <div class="mb-3">
+        <label for="firstName" class="form-label">FirstName</label>
+        <input
+          [(ngModel)]="firstName"
+          name="firstName"
+          id="firstName"
+          type="text"
+          class="form-control"
+          placeholder="Enter your firstName"
+          required
+          #firstNameRef="ngModel"
+        />
+        <div
+          class="text-danger mt-1"
+          *ngIf="firstNameRef.invalid && firstNameRef.touched"
+        >
+          <small *ngIf="firstNameRef.errors?.['required']"
+            >FirstName is required.</small
+          >
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="lastName" class="form-label">LastName</label>
+        <input
+          [(ngModel)]="lastName"
+          name="lastName"
+          id="lastName"
+          type="text"
+          class="form-control"
+          placeholder="Enter your lastName"
+          required
+          #lastNameRef="ngModel"
+        />
+        <div
+          class="text-danger mt-1"
+          *ngIf="lastNameRef.invalid && lastNameRef.touched"
+        >
+          <small *ngIf="lastNameRef.errors?.['required']"
+            >LastName is required.</small
+          >
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input
+          [(ngModel)]="email"
+          name="email"
+          id="email"
+          type="email"
+          class="form-control"
+          placeholder="Enter email"
+          required
+          email
+          #emailRef="ngModel"
+        />
+        <div
+          class="text-danger mt-1"
+          *ngIf="emailRef.invalid && emailRef.touched"
+        >
+          <small *ngIf="emailRef.errors?.['required']"
+            >Email is required.</small
+          >
+          <small *ngIf="emailRef.errors?.['email']"
+            >Invalid email format.</small
+          >
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          [(ngModel)]="password"
+          name="password"
+          id="password"
+          type="password"
+          class="form-control"
+          placeholder="Enter password"
+          required
+          minlength="6"
+          #passwordRef="ngModel"
+        />
+        <div
+          class="text-danger mt-1"
+          *ngIf="passwordRef.invalid && passwordRef.touched"
+        >
+          <small *ngIf="passwordRef.errors?.['required']"
+            >Password is required.</small
+          >
+          <small *ngIf="passwordRef.errors?.['minlength']"
+            >Minimum 6 characters.</small
+          >
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="registerForm.invalid"
+      >
+        Register
+      </button>
+    </form>
+
+    <p class="mt-4">
+      Already have an account? <a routerLink="/login">Login</a>
+    </p>
+  </div>
+</div>

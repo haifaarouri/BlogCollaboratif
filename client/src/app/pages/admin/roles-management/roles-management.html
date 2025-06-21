@@ -1,0 +1,118 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between mb-2">
+    <h2>Role Management</h2>
+    <button class="btn btn-success" (click)="openAddModal()">Add Role</button>
+  </div>
+
+  <div
+    *ngIf="message"
+    class="alert"
+    [ngClass]="{
+      'alert-success': messageType === 'success',
+      'alert-danger': messageType === 'error'
+    }"
+  >
+    {{ message }}
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Permissions</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let role of roles">
+        <td>{{ role.name }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let p of role.permissions">{{ p }}</li>
+          </ul>
+        </td>
+        <td>
+          <button
+            class="btn btn-sm btn-primary me-2"
+            (click)="openEditModal(role)"
+          >
+            Edit
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="deleteRole(role._id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div
+  class="modal d-block"
+  style="background-color: rgba(0, 0, 0, 0.5)"
+  *ngIf="showEditModal"
+>
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <h5>Edit Role</h5>
+      <form (ngSubmit)="saveEdit()">
+        <div class="mb-3">
+          <label>Name</label>
+          <input
+            [(ngModel)]="selectedRole.name"
+            name="name"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label>Permissions (comma-separated)</label>
+          <input
+            [(ngModel)]="selectedRole.permissions"
+            name="permissions"
+            class="form-control"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button class="btn btn-secondary ms-2" (click)="showEditModal = false">
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal d-block"
+  style="background-color: rgba(0, 0, 0, 0.5)"
+  *ngIf="showAddModal"
+>
+  <div class="modal-dialog">
+    <div class="modal-content p-3">
+      <h5>Add New Role</h5>
+      <form (ngSubmit)="saveNew()">
+        <div class="mb-3">
+          <label>Name</label>
+          <input
+            [(ngModel)]="newRole.name"
+            name="name"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label>Permissions (comma-separated)</label>
+          <input
+            [(ngModel)]="newRole.permissions"
+            name="permissions"
+            class="form-control"
+          />
+        </div>
+        <button type="submit" class="btn btn-success">Create</button>
+        <button class="btn btn-secondary ms-2" (click)="showAddModal = false">
+          Cancel
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

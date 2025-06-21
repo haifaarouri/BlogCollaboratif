@@ -38,14 +38,24 @@ export const register = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
-  await User.create({
+  const user = await User.create({
     firstName,
     lastName,
     email,
     password: hashedPassword,
     role: defaultRole._id,
   });
-  res.status(201).json({ message: "User registered successfully" });
+  res.status(201).json({
+    message: "User registered successfully",
+    user: {
+      _id: user._id,
+      email: user.email,
+      role: {
+        _id: user.role._id,
+        name: user.role.name,
+      },
+    },
+  });
 };
 
 export const login = async (req, res) => {
@@ -55,7 +65,7 @@ export const login = async (req, res) => {
     return res.status(400).json({ message: "All fields are required !" });
   }
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).populate("role");
   if (!user) return res.status(404).json({ message: "User not found !" });
 
   const isMatch = await bcrypt.compare(password, user.password);
@@ -72,7 +82,17 @@ export const login = async (req, res) => {
       sameSite: "Strict",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     })
-    .json({ token });
+    .json({
+      token,
+      user: {
+        _id: user._id,
+        email: user.email,
+        role: {
+          _id: user.role._id,
+          name: user.role.name,
+        },
+      },
+    });
 };
 
 export const refresh = (req, res) => {

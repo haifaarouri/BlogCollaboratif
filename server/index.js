@@ -5,11 +5,18 @@ import dotenv from "dotenv";
 import roleRoute from "./routes/role.js";
 import authRoute from "./routes/auth.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 const app = express();
 
 dotenv.config();
 
+app.use(
+  cors({
+    origin: "http://localhost:4200",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 

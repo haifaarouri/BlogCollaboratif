@@ -1,0 +1,77 @@
+<div
+  class="container d-flex justify-content-center align-items-center min-vh-100"
+>
+  <div class="card shadow p-4 w-100" style="max-width: 400px">
+    <h2 class="text-center mb-4">Login</h2>
+
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input
+          [(ngModel)]="email"
+          name="email"
+          id="email"
+          type="email"
+          class="form-control"
+          placeholder="Enter email"
+          required
+          email
+          #emailRef="ngModel"
+        />
+        <div
+          class="text-danger mt-1"
+          *ngIf="emailRef.invalid && emailRef.touched"
+        >
+          <small *ngIf="emailRef.errors?.['required']"
+            >Email is required.</small
+          >
+          <small *ngIf="emailRef.errors?.['email']"
+            >Invalid email format.</small
+          >
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          [(ngModel)]="password"
+          name="password"
+          id="password"
+          type="password"
+          class="form-control"
+          placeholder="Enter password"
+          required
+          minlength="6"
+          #passwordRef="ngModel"
+        />
+        <div
+          class="text-danger mt-1"
+          *ngIf="passwordRef.invalid && passwordRef.touched"
+        >
+          <small *ngIf="passwordRef.errors?.['required']"
+            >Password is required.</small
+          >
+          <small *ngIf="passwordRef.errors?.['minlength']"
+            >Minimum 6 characters.</small
+          >
+        </div>
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+    </form>
+
+    <p class="mt-4">
+      Don't have an account? <a routerLink="/register">Register</a>
+    </p>
+  </div>
+</div>
