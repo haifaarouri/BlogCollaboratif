@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -27,5 +28,15 @@ export class AuthService {
       {},
       { withCredentials: true }
     );
+  }
+
+  getCurrentUser() {
+    const token = localStorage.getItem('access_token');
+    if (!token) return null;
+    const decoded: any = jwtDecode(token);
+    return {
+      id: decoded._id,
+      role: decoded.role,
+    };
   }
 }

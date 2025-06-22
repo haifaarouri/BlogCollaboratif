@@ -5,15 +5,17 @@ import {
   getAllRoles,
   updateRole,
 } from "../controllers/role.controller.js";
+import { verifyToken } from "../middlewares/auth.js";
+import { requireRole } from "../middlewares/role.js";
 
 const router = express.Router();
 
-router.get("/", getAllRoles);
+router.get("/", verifyToken, requireRole(["Admin"]), getAllRoles);
 
-router.post("/create", createRole);
+router.post("/create", verifyToken, requireRole(["Admin"]), createRole);
 
-router.put("/update/:id", updateRole);
+router.put("/update/:id", verifyToken, requireRole(["Admin"]), updateRole);
 
-router.delete("/delete/:id", deleteRole);
+router.delete("/delete/:id", verifyToken, requireRole(["Admin"]), deleteRole);
 
 export default router;
